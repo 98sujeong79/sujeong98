@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>숫자게임</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .game-box {
+      width: 360px;
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    p {
+      color: #666;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      margin: 18px 0 10px;
+      font-size: 18px;
+      text-align: center;
+      border: 2px solid #ddd;
+      border-radius: 12px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #6c8cff;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 12px;
+      background: #6c8cff;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #5574e8;
+    }
+
+    .reset-btn {
+      background: #999;
+    }
+
+    .reset-btn:hover {
+      background: #777;
+    }
+
+    .message {
+      margin-top: 18px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+      min-height: 30px;
+    }
+
+    .count {
+      margin-top: 10px;
+      color: #555;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="game-box">
+    <h1>숫자게임</h1>
+    <p>1부터 100 사이의 숫자를 맞혀보세요!</p>
+
+    <input type="number" id="userInput" placeholder="숫자 입력" min="1" max="100" />
+
+    <button onclick="checkNumber()">확인하기</button>
+    <button class="reset-btn" onclick="resetGame()">다시 시작</button>
+
+    <div class="message" id="message"></div>
+    <div class="count" id="count">시도 횟수: 0</div>
+  </div>
+
+  <script>
+    let answer = Math.floor(Math.random() * 100) + 1;
+    let tryCount = 0;
+    let gameOver = false;
+
+    function checkNumber() {
+      const input = document.getElementById("userInput");
+      const message = document.getElementById("message");
+      const count = document.getElementById("count");
+
+      if (gameOver) {
+        message.textContent = "게임이 끝났어요. 다시 시작을 눌러주세요!";
+        return;
+      }
+
+      const userNumber = Number(input.value);
+
+      if (userNumber < 1 || userNumber > 100 || input.value === "") {
+        message.textContent = "1부터 100 사이 숫자를 입력하세요.";
+        input.value = "";
+        input.focus();
+        return;
+      }
+
+      tryCount++;
+      count.textContent = "시도 횟수: " + tryCount;
+
+      if (userNumber === answer) {
+        message.textContent = "정답입니다! 🎉";
+        gameOver = true;
+      } else if (userNumber < answer) {
+        message.textContent = "더 큰 숫자입니다!";
+      } else {
+        message.textContent = "더 작은 숫자입니다!";
+      }
+
+      input.value = "";
+      input.focus();
+    }
+
+    function resetGame() {
+      answer = Math.floor(Math.random() * 100) + 1;
+      tryCount = 0;
+      gameOver = false;
+
+      document.getElementById("userInput").value = "";
+      document.getElementById("message").textContent = "";
+      document.getElementById("count").textContent = "시도 횟수: 0";
+      document.getElementById("userInput").focus();
+    }
+  </script>
+
+</body>
+</html>
